@@ -2,6 +2,7 @@ void main(List<String> args) {
   print(factorialLoop(10));
   print(1 * 2 * 3 * 4 * 5 * 6 * 7 * 8 * 9 * 10);
   print(factorialRecursive(10));
+  loop(100000);
 }
 
 int factorialLoop(int value) {
@@ -17,5 +18,14 @@ int factorialRecursive(int value) {
     return 1;
   } else {
     return value * factorialRecursive(value - 1);
+  }
+}
+
+void loop(int value) {
+  if (value == 0) {
+    print('done');
+  } else {
+    print('loop : $value');
+    loop(value - 1);
   }
 }
