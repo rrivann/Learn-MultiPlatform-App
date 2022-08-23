@@ -55,6 +55,13 @@ class _LoginPageMobileState extends State<LoginPageMobile> {
       ),
     ));
   }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 }
 
 class LoginPageWeb extends StatefulWidget {
@@ -90,6 +97,13 @@ class _LoginPageWebState extends State<LoginPageWeb> {
         ),
       ),
     ));
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
   }
 }
 

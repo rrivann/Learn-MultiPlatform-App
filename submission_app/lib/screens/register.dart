@@ -30,7 +30,6 @@ class RegisterPageMobile extends StatefulWidget {
 class _RegisterPageMobileState extends State<RegisterPageMobile> {
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
-
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
@@ -63,6 +62,15 @@ class _RegisterPageMobileState extends State<RegisterPageMobile> {
       ),
     );
   }
+
+  @override
+  void dispose() {
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 }
 
 class RegisterPageWeb extends StatefulWidget {
@@ -75,7 +83,6 @@ class RegisterPageWeb extends StatefulWidget {
 class _RegisterPageWebState extends State<RegisterPageWeb> {
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
-
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
@@ -107,6 +114,15 @@ class _RegisterPageWebState extends State<RegisterPageWeb> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
   }
 }
 

@@ -47,17 +47,22 @@ class _HomePageMobileState extends State<HomePageMobile> {
           Container(
             padding: const EdgeInsets.only(right: 20, left: 20, bottom: 20),
             child: Column(
-              children: [_listTodo(todosList, _handleTodo, _deleteTodo)],
+              children: [
+                _listTodo(todosList, _handleTodo, _deleteTodo),
+              ],
             ),
           ),
           Align(
             alignment: Alignment.bottomCenter,
-            child: Row(
-              children: [
-                _newTodo(_todoController, widget.constraints),
-                _buttonAdd(
-                    context, _addTodo, _todoController, widget.constraints)
-              ],
+            child: Container(
+              color: Colors.white,
+              child: Row(
+                children: [
+                  _newTodo(_todoController, widget.constraints),
+                  _buttonAdd(
+                      context, _addTodo, _todoController, widget.constraints)
+                ],
+              ),
             ),
           )
         ],
@@ -71,6 +76,12 @@ class _HomePageMobileState extends State<HomePageMobile> {
   void _addTodo(String todo) {
     setState(() => todosList.add(Todo(id: uuid.v4(), todoText: todo)));
     _todoController.clear();
+  }
+
+  @override
+  void dispose() {
+    _todoController.dispose();
+    super.dispose();
   }
 }
 
@@ -102,12 +113,15 @@ class _HomePageWebState extends State<HomePageWeb> {
           ),
           Align(
             alignment: Alignment.bottomCenter,
-            child: Row(
-              children: [
-                _newTodo(_todoController, widget.constraints),
-                _buttonAdd(
-                    context, _addTodo, _todoController, widget.constraints)
-              ],
+            child: Container(
+              color: Colors.white,
+              child: Row(
+                children: [
+                  _newTodo(_todoController, widget.constraints),
+                  _buttonAdd(
+                      context, _addTodo, _todoController, widget.constraints)
+                ],
+              ),
             ),
           )
         ],
@@ -121,6 +135,12 @@ class _HomePageWebState extends State<HomePageWeb> {
   void _addTodo(String todo) {
     setState(() => todosList.add(Todo(id: uuid.v4(), todoText: todo)));
     _todoController.clear();
+  }
+
+  @override
+  void dispose() {
+    _todoController.dispose();
+    super.dispose();
   }
 }
 
@@ -159,10 +179,10 @@ Expanded _newTodo(
   return Expanded(
     child: Container(
       margin: EdgeInsets.only(
-        bottom: 20,
-        left: constraints.maxWidth > 900 ? 200 : 20,
-        right: 20,
-      ),
+          bottom: 20,
+          left: constraints.maxWidth > 900 ? 200 : 20,
+          right: 20,
+          top: 20),
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -188,7 +208,7 @@ Container _buttonAdd(BuildContext context, Function addTodo,
     TextEditingController todoController, BoxConstraints constraints) {
   return Container(
     margin: EdgeInsets.only(
-        bottom: 20, right: constraints.maxWidth > 900 ? 200 : 20),
+        bottom: 20, right: constraints.maxWidth > 900 ? 200 : 20, top: 20),
     child: ElevatedButton(
       onPressed: () {
         if (todoController.text != '') {
