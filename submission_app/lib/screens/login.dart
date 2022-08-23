@@ -146,8 +146,10 @@ Row _registerNow(BuildContext context) {
     children: [
       const Text('Dont have account ?'),
       InkWell(
-        onTap: () => Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const RegisterScreen())),
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const RegisterScreen()),
+        ),
         child: const Text(
           ' Register now',
           style: TextStyle(

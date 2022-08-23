@@ -49,6 +49,7 @@ class _HomePageMobileState extends State<HomePageMobile> {
             child: Column(
               children: [
                 _listTodo(todosList, _handleTodo, _deleteTodo),
+                const SizedBox(height: 60)
               ],
             ),
           ),
