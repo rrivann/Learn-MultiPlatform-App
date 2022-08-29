@@ -9,14 +9,15 @@ class Article {
   final String publishedAt;
   final String content;
 
-  Article(
-      {required this.author,
-      required this.title,
-      required this.description,
-      required this.url,
-      required this.urlToImage,
-      required this.publishedAt,
-      required this.content});
+  Article({
+    required this.author,
+    required this.title,
+    required this.description,
+    required this.url,
+    required this.urlToImage,
+    required this.publishedAt,
+    required this.content,
+  });
 
   // named constructor
   factory Article.fromJson(Map<String, dynamic> article) => Article(
