@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:fundamental_app/moduls/fundamental_flutter/news_app/data/models/article_api_model.dart';
 import 'package:fundamental_app/moduls/fundamental_flutter/news_app/pages/article_detail_page.dart';
-import 'package:fundamental_app/moduls/fundamental_flutter/news_app/models/article_model.dart';
 import 'package:fundamental_app/moduls/fundamental_flutter/news_app/pages/article_web_view.dart';
 import 'package:fundamental_app/moduls/fundamental_flutter/news_app/pages/home_page.dart';
 import 'package:fundamental_app/moduls/fundamental_flutter/news_app/utils/styles.dart';
@@ -36,7 +36,7 @@ class MainNewsApp extends StatelessWidget {
       routes: {
         HomePage.routeName: (context) => const HomePage(),
         ArticleDetailPage.routeName: (context) => ArticleDetailPage(
-            article: ModalRoute.of(context)?.settings.arguments as Article),
+            article: ModalRoute.of(context)?.settings.arguments as ArticleApi),
         ArticleWebView.routeName: (context) => ArticleWebView(
             url: ModalRoute.of(context)?.settings.arguments as String)
       },

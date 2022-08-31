@@ -1,10 +1,13 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fundamental_app/moduls/fundamental_flutter/news_app/data/api/api_service.dart';
 import 'package:fundamental_app/moduls/fundamental_flutter/news_app/pages/headline_page.dart';
 import 'package:fundamental_app/moduls/fundamental_flutter/news_app/pages/settings_page.dart';
+import 'package:fundamental_app/moduls/fundamental_flutter/news_app/provider/news_provider.dart';
 import 'package:fundamental_app/moduls/fundamental_flutter/news_app/utils/styles.dart';
 import 'package:fundamental_app/moduls/fundamental_flutter/news_app/widgets/platform_widget.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   static const routeName = '/article_list';
@@ -65,7 +68,9 @@ class _HomePageState extends State<HomePage> {
   ];
 
   final List<Widget> _listWidget = [
-    const HeadlinePage(),
+    ChangeNotifierProvider<NewsProvider>(
+        create: (_) => NewsProvider(apiService: ApiService()),
+        child: const HeadlinePage()),
     const SettingsPage(),
   ];
 }
