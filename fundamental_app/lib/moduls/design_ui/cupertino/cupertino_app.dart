@@ -42,7 +42,7 @@ class CupertinoAppScreen extends StatelessWidget {
 }
 
 Widget _feedsPage(BuildContext context) {
-  Future _showFeeds(BuildContext context) {
+  Future showFeeds(BuildContext context) {
     return showCupertinoModalPopup(
         context: context,
         builder: (context) {
@@ -110,7 +110,7 @@ Widget _feedsPage(BuildContext context) {
           CupertinoButton.filled(
             child: const Text('Select Category'),
             onPressed: () {
-              _showFeeds(context);
+              showFeeds(context);
             },
           ),
         ],
@@ -139,7 +139,7 @@ Widget _searchPage(BuildContext context) {
 }
 
 Widget _settingsPage(BuildContext context) {
-  Future _showSettings(BuildContext context) {
+  Future showSettings(BuildContext context) {
     return showCupertinoDialog(
       context: context,
       builder: (context) {
@@ -168,7 +168,7 @@ Widget _settingsPage(BuildContext context) {
       child: CupertinoButton(
         child: const Text('Log out'),
         onPressed: () {
-          _showSettings(context);
+          showSettings(context);
         },
       ),
     ),

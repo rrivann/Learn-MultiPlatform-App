@@ -21,6 +21,12 @@ class ArticlesResult {
                   article.content != null),
         ),
       );
+
+  Map<String, dynamic> toJson() => {
+        "status": status,
+        "totalResults": totalResults,
+        "articles": List<dynamic>.from(articlesApi.map((x) => x.toJson())),
+      };
 }
 
 class ArticleApi {
@@ -51,4 +57,14 @@ class ArticleApi {
         publishedAt: DateTime.parse(json["publishedAt"]),
         content: json["content"],
       );
+
+  Map<String, dynamic> toJson() => {
+        "author": author,
+        "title": title,
+        "description": description,
+        "url": url,
+        "urlToImage": urlToImage,
+        "publishedAt": publishedAt?.toIso8601String(),
+        "content": content,
+      };
 }

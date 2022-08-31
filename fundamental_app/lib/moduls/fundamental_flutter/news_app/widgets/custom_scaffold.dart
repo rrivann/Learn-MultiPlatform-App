@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fundamental_app/moduls/fundamental_flutter/news_app/common/navigation.dart';
 
 class CustomScaffold extends StatelessWidget {
   final Widget body;
@@ -32,7 +33,7 @@ Widget _buildShortAppBar(BuildContext context) {
       mainAxisSize: MainAxisSize.min,
       children: [
         IconButton(
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => Navigation.back(),
           icon: const Icon(Icons.arrow_back),
         ),
         Padding(

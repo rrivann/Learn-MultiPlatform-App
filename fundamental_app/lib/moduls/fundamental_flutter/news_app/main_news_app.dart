@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:fundamental_app/moduls/fundamental_flutter/news_app/common/navigation.dart';
 import 'package:fundamental_app/moduls/fundamental_flutter/news_app/data/models/article_api_model.dart';
 import 'package:fundamental_app/moduls/fundamental_flutter/news_app/pages/article_detail_page.dart';
 import 'package:fundamental_app/moduls/fundamental_flutter/news_app/pages/article_web_view.dart';
 import 'package:fundamental_app/moduls/fundamental_flutter/news_app/pages/home_page.dart';
-import 'package:fundamental_app/moduls/fundamental_flutter/news_app/utils/styles.dart';
+import 'package:fundamental_app/moduls/fundamental_flutter/news_app/common/styles.dart';
 
 class MainNewsApp extends StatelessWidget {
   const MainNewsApp({Key? key}) : super(key: key);
@@ -22,8 +23,8 @@ class MainNewsApp extends StatelessWidget {
         appBarTheme: const AppBarTheme(elevation: 0),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            primary: secondaryColor,
-            onPrimary: Colors.white,
+            backgroundColor: secondaryColor,
+            foregroundColor: Colors.white,
             textStyle: const TextStyle(),
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(0)),
@@ -32,6 +33,7 @@ class MainNewsApp extends StatelessWidget {
         ),
       ),
       debugShowCheckedModeBanner: false,
+      navigatorKey: navigatorKey,
       initialRoute: HomePage.routeName,
       routes: {
         HomePage.routeName: (context) => const HomePage(),

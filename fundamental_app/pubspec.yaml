@@ -43,6 +43,11 @@ dependencies:
   intl: ^0.17.0
   app_settings: ^4.1.8
   http: ^0.13.5
+  flutter_local_notifications: ^9.9.0
+  rxdart: ^0.27.5
+  path_provider: ^2.0.11
+  timezone: ^0.8.0
+  android_alarm_manager_plus: ^2.0.6+1
 
 dev_dependencies:
   flutter_test:

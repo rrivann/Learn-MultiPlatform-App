@@ -25,8 +25,8 @@ class MainPracticeLocalization extends StatelessWidget {
               scaffoldBackgroundColor: Colors.grey.shade50,
               outlinedButtonTheme: OutlinedButtonThemeData(
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.blueGrey.shade800,
-                  onPrimary: Colors.white,
+                  backgroundColor: Colors.blueGrey.shade800,
+                  foregroundColor: Colors.white,
                 ),
               ),
             ),

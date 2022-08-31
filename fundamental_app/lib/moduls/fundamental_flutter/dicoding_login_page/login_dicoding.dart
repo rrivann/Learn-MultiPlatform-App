@@ -94,8 +94,8 @@ class _LoginScreenDicodingState extends State<LoginScreenDicoding> {
               ),
               const SizedBox(height: 16),
               ElevatedButton(
-                style:
-                    ElevatedButton.styleFrom(primary: Colors.blueGrey.shade800),
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blueGrey.shade800),
                 onPressed: () {},
                 child: const Text(
                   'Masuk',
