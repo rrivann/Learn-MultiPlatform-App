@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:restaurant_app/utils/styles.dart';
+import 'package:restaurant_app/common/styles.dart';
 
 Widget menusNameWidget(String menus) {
   return Container(
