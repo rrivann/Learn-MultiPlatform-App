@@ -1,9 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fundamental_app/moduls/fundamental_flutter/news_app/common/navigation.dart';
-import 'package:fundamental_app/moduls/fundamental_flutter/news_app/data/models/article_api_model.dart';
-import 'package:fundamental_app/moduls/fundamental_flutter/news_app/pages/article_detail_page.dart';
 import 'package:fundamental_app/moduls/fundamental_flutter/news_app/provider/news_provider.dart';
+import 'package:fundamental_app/moduls/fundamental_flutter/news_app/utils/result_state.dart';
+import 'package:fundamental_app/moduls/fundamental_flutter/news_app/widgets/card_article.dart';
 import 'package:provider/provider.dart';
 
 // class HeadlinePage extends StatelessWidget {
@@ -73,7 +72,7 @@ class HeadlinePage extends StatelessWidget {
               itemCount: state.result.articlesApi.length,
               itemBuilder: (context, index) {
                 var article = state.result.articlesApi[index];
-                return _buildArticleItem(context, article);
+                return CardArticle(article: article);
               },
             );
           } else if (state.state == ResultState.noData) {
@@ -99,24 +98,4 @@ class HeadlinePage extends StatelessWidget {
       ),
     );
   }
-}
-
-Widget _buildArticleItem(BuildContext context, ArticleApi article) {
-  return Material(
-    child: ListTile(
-      onTap: () =>
-          Navigation.intentWithData(ArticleDetailPage.routeName, article),
-      contentPadding:
-          const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-      leading: Hero(
-        tag: article.urlToImage!,
-        child: Image.network(
-          article.urlToImage!,
-          width: 100,
-        ),
-      ),
-      title: Text(article.title),
-      subtitle: Text(article.author ?? " "),
-    ),
-  );
 }

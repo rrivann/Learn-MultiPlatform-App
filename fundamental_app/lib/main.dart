@@ -1,31 +1,35 @@
-import 'dart:io';
-
-import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:fundamental_app/moduls/fundamental_flutter/news_app/main_news_app.dart';
-import 'package:fundamental_app/moduls/fundamental_flutter/news_app/utils/background_service.dart';
-import 'package:fundamental_app/moduls/fundamental_flutter/news_app/utils/notification_helper.dart';
+import 'package:fundamental_app/firebase_options.dart';
+import 'package:fundamental_app/moduls/firebase/dicoding_chatting/main.dart';
 
 // void main() {
-//   runApp(const MainNewsApp());
+//   runApp(const PracticeChatFirebase());
 // }
 
-final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-    FlutterLocalNotificationsPlugin();
-
-Future<void> main() async {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final NotificationHelper notificationHelper = NotificationHelper();
-  final BackgroundService service = BackgroundService();
-  service.initializeIsolate();
-  if (Platform.isAndroid) {
-    await AndroidAlarmManager.initialize();
-  }
-  await notificationHelper.initNotifications(flutterLocalNotificationsPlugin);
-
-  runApp(const MainNewsApp());
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(const PracticeChatFirebase());
 }
+
+
+// final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+//     FlutterLocalNotificationsPlugin();
+
+// Future<void> main() async {
+//   WidgetsFlutterBinding.ensureInitialized();
+//   final NotificationHelper notificationHelper = NotificationHelper();
+//   final BackgroundService service = BackgroundService();
+//   service.initializeIsolate();
+//   if (Platform.isAndroid) {
+//     await AndroidAlarmManager.initialize();
+//   }
+//   await notificationHelper.initNotifications(FlutterLocalNotificationsPlugin());
+//   runApp(const MainNewsApp());
+// }
 
 
 // Future<void> main() async {

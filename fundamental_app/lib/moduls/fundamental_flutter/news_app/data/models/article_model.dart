@@ -6,7 +6,7 @@ class Article {
   final String description;
   final String url;
   final String urlToImage;
-  final String publishedAt;
+  final DateTime publishedAt;
   final String content;
 
   Article({
@@ -29,6 +29,16 @@ class Article {
         publishedAt: article['publishedAt'],
         content: article['content'],
       );
+
+  Map<String, dynamic> toJson() => {
+        "author": author,
+        "title": title,
+        "description": description,
+        "url": url,
+        "urlToImage": urlToImage,
+        "publishedAt": publishedAt.toIso8601String(),
+        "content": content,
+      };
 }
 
 List<Article> parseArticles(String? json) {

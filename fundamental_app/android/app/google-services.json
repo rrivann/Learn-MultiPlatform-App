@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "759326988137",
+    "project_id": "dicodingflutterchatting",
+    "storage_bucket": "dicodingflutterchatting.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:759326988137:android:33c783c2298b96f89c0ff8",
+        "android_client_info": {
+          "package_name": "com.example.fundamental_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "759326988137-d2q66jpd2ssh9qek7lt8eb6h101addff.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD0JhN-vziFTGgW3XcsV8NA-Gf95eCcHKg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "759326988137-d2q66jpd2ssh9qek7lt8eb6h101addff.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fundamental_app/moduls/fundamental_flutter/news_app/data/api/api_service.dart';
 import 'package:fundamental_app/moduls/fundamental_flutter/news_app/data/models/article_api_model.dart';
-
-enum ResultState { loading, noData, hasData, error }
+import 'package:fundamental_app/moduls/fundamental_flutter/news_app/utils/result_state.dart';
 
 class NewsProvider extends ChangeNotifier {
   final ApiService apiService;
