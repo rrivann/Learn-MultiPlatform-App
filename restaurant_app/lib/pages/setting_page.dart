@@ -1,6 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:restaurant_app/common/styles.dart';
+import 'package:restaurant_app/provider/preferences_provider.dart';
+import 'package:restaurant_app/provider/scheduling_provider.dart';
+import 'package:restaurant_app/widgets/custom_dialog.dart';
 import 'package:restaurant_app/widgets/platform_widget.dart';
 
 class SettingPage extends StatelessWidget {
@@ -36,57 +42,43 @@ Widget _buildSettingIosWidget(BuildContext context) {
 }
 
 Widget _buildList(BuildContext context) {
-  return ListView(
-    children: [
-      Material(
-        child: ListTile(
-          tileColor: Colors.white,
-          title: const Text('Dark Theme'),
-          trailing: Switch.adaptive(
-            value: false,
-            onChanged: (value) {
-              defaultTargetPlatform == TargetPlatform.iOS
-                  ? showCupertinoDialog(
-                      context: context,
-                      barrierDismissible: true,
-                      builder: (context) {
-                        return CupertinoAlertDialog(
-                          title: const Text('Coming Soon!'),
-                          content:
-                              const Text('This feature will be coming soon!'),
-                          actions: [
-                            CupertinoDialogAction(
-                              child: const Text('Ok'),
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                            ),
-                          ],
-                        );
-                      },
-                    )
-                  : showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          title: const Text('Coming Soon!'),
-                          content:
-                              const Text('This feature will be coming soon!'),
-                          actions: [
-                            TextButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              child: const Text('Ok'),
-                            ),
-                          ],
-                        );
-                      },
-                    );
-            },
+  return Consumer<PreferencesProvider>(builder: (context, provider, child) {
+    return ListView(
+      children: [
+        Material(
+          child: ListTile(
+            title: const Text('Dark Theme'),
+            trailing: Switch.adaptive(
+              activeColor: primaryColor,
+              value: provider.isDarkTheme,
+              onChanged: (value) {
+                provider.enableDarkTheme(value);
+              },
+            ),
           ),
         ),
-      ),
-    ],
-  );
+        Material(
+          child: ListTile(
+            title: const Text('Restaurant Notifications'),
+            trailing: Consumer<SchedulingProvider>(
+              builder: (context, schedule, child) {
+                return Switch.adaptive(
+                  activeColor: primaryColor,
+                  value: provider.isDailyReminderActive,
+                  onChanged: (value) async {
+                    if (Platform.isIOS) {
+                      customDialog(context);
+                    } else {
+                      provider.enableDailyReminder(value);
+                      schedule.scheduledNews(value);
+                    }
+                  },
+                );
+              },
+            ),
+          ),
+        ),
+      ],
+    );
+  });
 }

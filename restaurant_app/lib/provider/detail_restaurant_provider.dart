@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:restaurant_app/common/result_state.dart';
 import 'package:restaurant_app/data/api/restaurant_api.dart';
 import 'package:restaurant_app/data/models/detail_restaurant.dart';
-import 'package:restaurant_app/utils/nointernet_exception.dart';
+import 'package:restaurant_app/common/nointernet_exception.dart';
+import '../common/result_state.dart';
 
 class DetailRestaurantProvider extends ChangeNotifier {
   DetailRestaurantProvider({required this.apiService, required this.id}) {

@@ -54,4 +54,13 @@ class RestaurantSearch {
         city: json["city"],
         rating: json["rating"].toDouble(),
       );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "name": name,
+        "description": description,
+        "pictureId": pictureId,
+        "city": city,
+        "rating": rating
+      };
 }

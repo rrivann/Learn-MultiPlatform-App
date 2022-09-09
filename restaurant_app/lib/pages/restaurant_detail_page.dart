@@ -1,19 +1,21 @@
 import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:restaurant_app/common/result_state.dart';
 import 'package:restaurant_app/common/styles.dart';
 import 'package:restaurant_app/data/api/restaurant_api.dart';
 import 'package:restaurant_app/provider/detail_restaurant_provider.dart';
 import 'package:restaurant_app/provider/new_review_provider.dart';
+import '../common/result_state.dart';
 import 'package:restaurant_app/widgets/restaurant_detail_widget.dart';
 
 class RestaurantDetailPage extends StatefulWidget {
   static const routeName = '/restaurant_detail';
-  final String id;
+  final dynamic restaurant;
 
-  const RestaurantDetailPage({Key? key, required this.id}) : super(key: key);
+  const RestaurantDetailPage({Key? key, required this.restaurant})
+      : super(key: key);
 
   @override
   State<RestaurantDetailPage> createState() => _RestaurantDetailPageState();
@@ -29,18 +31,18 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
       providers: [
         ChangeNotifierProvider(
           create: (context) => DetailRestaurantProvider(
-              apiService: RestaurantApiService(), id: widget.id),
+              apiService: RestaurantApiService(), id: widget.restaurant.id),
         ),
         ChangeNotifierProvider(
           create: (context) => NewReviewProvider(
-              apiService: RestaurantApiService(), id: widget.id),
+              apiService: RestaurantApiService(), id: widget.restaurant.id),
         )
       ],
       child: Platform.isAndroid
           ? _buildRestaurantDetailAndroidWidget(
-              context, _nameController, _reviewController)
+              context, _nameController, _reviewController, widget.restaurant)
           : _buildRestaurantDetailIosWidget(
-              context, _nameController, _reviewController),
+              context, _nameController, _reviewController, widget.restaurant),
     );
   }
 
@@ -55,7 +57,8 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
 Widget _buildRestaurantDetailAndroidWidget(
     BuildContext context,
     TextEditingController nameController,
-    TextEditingController reviewController) {
+    TextEditingController reviewController,
+    dynamic restaurant) {
   return Scaffold(
     body: SafeArea(
       child: Stack(
@@ -73,7 +76,7 @@ Widget _buildRestaurantDetailAndroidWidget(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          nameRestaurantAndroidWidget(value),
+                          nameRestaurantWidget(value, restaurant),
                           const SizedBox(height: 10),
                           const Divider(color: Colors.grey),
                           descriptionWidget(value),
@@ -85,7 +88,7 @@ Widget _buildRestaurantDetailAndroidWidget(
                           const Divider(color: Colors.grey),
                           const SizedBox(height: 10),
                           reviewAndroidWidget(
-                              context, nameController, reviewController),
+                              context, nameController, reviewController, value),
                           const SizedBox(height: 10),
                         ],
                       ),
@@ -128,7 +131,8 @@ Widget _buildRestaurantDetailAndroidWidget(
 Widget _buildRestaurantDetailIosWidget(
     BuildContext context,
     TextEditingController nameController,
-    TextEditingController reviewController) {
+    TextEditingController reviewController,
+    dynamic restaurant) {
   return CupertinoPageScaffold(
     child: SafeArea(
       child: Stack(
@@ -147,7 +151,7 @@ Widget _buildRestaurantDetailIosWidget(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          nameRestaurantIosWidget(value),
+                          nameRestaurantWidget(value, restaurant),
                           const SizedBox(height: 10),
                           const Divider(color: Colors.grey),
                           descriptionWidget(value),
@@ -159,7 +163,7 @@ Widget _buildRestaurantDetailIosWidget(
                           const Divider(color: Colors.grey),
                           const SizedBox(height: 10),
                           reviewIosWidget(
-                              context, nameController, reviewController),
+                              context, nameController, reviewController, value),
                           const SizedBox(height: 10),
                         ],
                       ),
@@ -188,7 +192,10 @@ Widget _buildRestaurantDetailIosWidget(
             }
           }),
           CupertinoButton(
-              child: const Icon(Icons.arrow_back),
+              child: const Icon(
+                Icons.arrow_back,
+                color: primaryColor,
+              ),
               onPressed: () => Navigator.pop(context)),
         ],
       ),

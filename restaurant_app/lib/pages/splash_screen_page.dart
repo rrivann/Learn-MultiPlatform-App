@@ -1,8 +1,9 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:restaurant_app/pages/home_page.dart';
+
 import 'package:restaurant_app/common/styles.dart';
+import 'package:restaurant_app/utils/bottom_nav.dart';
 
 class SplashScreenAndroidPage extends StatefulWidget {
   static const routeName = '/splash_screen_android_page';
@@ -20,7 +21,7 @@ class _SplashScreenAndroidPageState extends State<SplashScreenAndroidPage> {
     super.initState();
     Timer(
       const Duration(seconds: 2),
-      () => Navigator.pushReplacementNamed(context, HomePage.routeName),
+      () => Navigator.pushReplacementNamed(context, BottomNav.routeName),
     );
   }
 
@@ -72,7 +73,7 @@ class _SplashScreenIosPageState extends State<SplashScreenIosPage> {
     super.initState();
     Timer(
       const Duration(seconds: 2),
-      () => Navigator.pushReplacementNamed(context, HomePage.routeName),
+      () => Navigator.pushReplacementNamed(context, BottomNav.routeName),
     );
   }
 

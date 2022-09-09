@@ -4,7 +4,7 @@ import 'package:restaurant_app/data/models/detail_restaurant.dart';
 import 'package:restaurant_app/data/models/list_restaurant.dart';
 import 'package:restaurant_app/data/models/new_review.dart';
 import 'package:restaurant_app/data/models/search_restaurant.dart';
-import 'package:restaurant_app/utils/nointernet_exception.dart';
+import 'package:restaurant_app/common/nointernet_exception.dart';
 
 const String urlImageMedium =
     'https://restaurant-api.dicoding.dev/images/medium/';

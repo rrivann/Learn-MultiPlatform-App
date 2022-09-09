@@ -3,10 +3,11 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:restaurant_app/common/result_state.dart';
+import 'package:restaurant_app/common/styles.dart';
 import 'package:restaurant_app/data/api/restaurant_api.dart';
 import 'package:restaurant_app/provider/search_restaurant_provider.dart';
-import 'package:restaurant_app/widgets/restaurant_item_widget.dart';
+import '../common/result_state.dart';
+import 'package:restaurant_app/widgets/card_restaurant_widget.dart';
 
 class SearchPage extends StatefulWidget {
   static const routeName = '/search';
@@ -61,10 +62,12 @@ Widget _buildAndroid(
                   ),
                   child: TextField(
                     controller: searchController,
+                    style: const TextStyle(color: Colors.black),
                     decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Restaurant / Foods / Drinks',
-                        contentPadding: EdgeInsets.symmetric(horizontal: 10)),
+                      border: InputBorder.none,
+                      hintText: 'Restaurant / Foods / Drinks',
+                      contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                    ),
                     onChanged: (value) {
                       Provider.of<SearchRestaurantProvider>(context,
                               listen: false)
@@ -92,7 +95,10 @@ Widget _buildIos(BuildContext context, TextEditingController searchController) {
             leading: Material(
               child: IconButton(
                   onPressed: () => Navigator.pop(context),
-                  icon: const Icon(Icons.arrow_back)),
+                  icon: const Icon(
+                    Icons.arrow_back,
+                    color: primaryColor,
+                  )),
             )),
         child: SafeArea(
           child: Column(
@@ -133,8 +139,10 @@ Widget _futureBuilder(BuildContext context) {
           itemCount: value.result.restaurants.length,
           itemBuilder: (context, index) {
             var restaurantSearch = value.result.restaurants[index];
-            return restaurantItemWidget(
-                context, restaurantSearch, restaurantSearch.id);
+            return cardRestaurant(
+              context,
+              restaurantSearch,
+            );
           },
         );
       } else if (value.state == ResultState.noData) {
