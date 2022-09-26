@@ -31,10 +31,21 @@ dependencies:
     path: about
   core:
     path: core
+  search:
+    path: search
+  flutter_bloc: ^8.1.1
+  encrypt: ^5.0.1
+  firebase_core: ^1.22.0
+  firebase_crashlytics: ^2.8.10
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_lints: ^2.0.0
+  mockito: ^5.0.8
+  build_runner: ^2.0.4
+  bloc_test: ^9.1.0
+  mocktail: ^0.3.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

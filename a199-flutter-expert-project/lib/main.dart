@@ -1,37 +1,37 @@
 import 'package:about/about_page.dart';
-import 'package:core/core.dart';
 import 'package:core/common/utils.dart';
-import 'package:core/presentation/pages/tv_series/home_tv_series_page.dart';
+import 'package:core/core.dart';
+import 'package:core/presentation/bloc/movie/movie_bloc.dart';
+import 'package:core/presentation/bloc/tv/tv_bloc.dart';
 import 'package:core/presentation/pages/movie/movie_detail_page.dart';
-import 'package:core/presentation/pages/movie/home_movie_page.dart';
 import 'package:core/presentation/pages/movie/popular_movies_page.dart';
-import 'package:core/presentation/pages/movie/search_page.dart';
 import 'package:core/presentation/pages/movie/top_rated_movies_page.dart';
 import 'package:core/presentation/pages/movie/watchlist_movies_page.dart';
+import 'package:core/presentation/pages/tv_series/home_tv_series_page.dart';
 import 'package:core/presentation/pages/tv_series/popular_tv_series_page.dart';
-import 'package:core/presentation/pages/tv_series/search_tv_series_page.dart';
 import 'package:core/presentation/pages/tv_series/top_rated_tv_series_page.dart';
 import 'package:core/presentation/pages/tv_series/tv_series_detail_page.dart';
 import 'package:core/presentation/pages/tv_series/watlist_tv_series_page.dart';
-import 'package:core/presentation/provider/movie/movie_detail_notifier.dart';
-import 'package:core/presentation/provider/movie/movie_list_notifier.dart';
-import 'package:core/presentation/provider/movie/movie_search_notifier.dart';
-import 'package:core/presentation/provider/movie/popular_movies_notifier.dart';
-import 'package:core/presentation/provider/movie/top_rated_movies_notifier.dart';
-import 'package:core/presentation/provider/tv_series/popular_tv_series_notifier.dart';
-import 'package:core/presentation/provider/tv_series/top_rated_tv_series_notifier.dart';
-import 'package:core/presentation/provider/tv_series/tv_series_detail_notifier.dart';
-import 'package:core/presentation/provider/tv_series/tv_series_list_notifier.dart';
-import 'package:core/presentation/provider/movie/watchlist_movie_notifier.dart';
-import 'package:core/presentation/provider/tv_series/tv_series_search_notifier.dart';
-import 'package:core/presentation/provider/tv_series/watchlist_tv_series_notifier.dart';
-import 'package:core/presentation/widgets/custom_drawer.dart';
+import 'package:core/presentation/widgets/navbar.dart';
+import 'package:core/utils/ssl_helper.dart';
+import 'package:ditonton/firebase_options.dart';
+import 'package:ditonton/injection.dart' as di;
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:ditonton/injection.dart' as di;
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:search/presentation/bloc/movie/search_bloc.dart';
+import 'package:search/presentation/bloc/tv/search_bloc.dart';
+import 'package:search/presentation/pages/search_tv_series_page.dart';
+import 'package:search/search.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+  await SslHelper.init();
   di.init();
   runApp(MyApp());
 }
@@ -39,44 +39,22 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
+    return MultiBlocProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (_) => di.locator<MovieListNotifier>(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<MovieDetailNotifier>(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<MovieSearchNotifier>(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<TopRatedMoviesNotifier>(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<PopularMoviesNotifier>(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<WatchlistMovieNotifier>(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<TvSeriesListNotifier>(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<TvSeriesDetailNotifier>(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<TvSeriesSearchNotifier>(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<WatchlistTvSeriesNotifier>(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<PopularTvSeriesNotifier>(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<TopRatedTvSeriesNotifier>(),
-        ),
+        BlocProvider(create: (_) => di.locator<SearchBlocMovie>()),
+        BlocProvider(create: (_) => di.locator<NowMovieBloc>()),
+        BlocProvider(create: (_) => di.locator<PopularMovieBloc>()),
+        BlocProvider(create: (_) => di.locator<TopMovieBloc>()),
+        BlocProvider(create: (_) => di.locator<DetailMovieBloc>()),
+        BlocProvider(create: (_) => di.locator<RecommendedMovieBloc>()),
+        BlocProvider(create: (_) => di.locator<WatchlistBloc>()),
+        BlocProvider(create: (_) => di.locator<SearchBlocTv>()),
+        BlocProvider(create: (_) => di.locator<NowTvBloc>()),
+        BlocProvider(create: (_) => di.locator<PopularTvBloc>()),
+        BlocProvider(create: (_) => di.locator<TopTvBloc>()),
+        BlocProvider(create: (_) => di.locator<DetailTvBloc>()),
+        BlocProvider(create: (_) => di.locator<RecommendedTvBloc>()),
+        BlocProvider(create: (_) => di.locator<WatchlistTvBloc>()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -86,18 +64,12 @@ class MyApp extends StatelessWidget {
           scaffoldBackgroundColor: kRichBlack,
           textTheme: kTextTheme,
         ),
-        home: Material(
-          child: CustomDrawer(
-            content: HomeMoviePage(),
-          ),
-        ),
+        home: BottomNav(),
         navigatorObservers: [routeObserver],
         onGenerateRoute: (RouteSettings settings) {
           switch (settings.name) {
             case '/home':
-              return MaterialPageRoute(
-                  builder: (_) =>
-                      Material(child: CustomDrawer(content: HomeMoviePage())));
+              return MaterialPageRoute(builder: (_) => BottomNav());
             case PopularMoviesPage.routeName:
               return CupertinoPageRoute(builder: (_) => PopularMoviesPage());
             case TopRatedMoviesPage.routeName:
@@ -115,9 +87,7 @@ class MyApp extends StatelessWidget {
             case AboutPage.routeName:
               return MaterialPageRoute(builder: (_) => AboutPage());
             case HomeTvSeriesPage.routeName:
-              return MaterialPageRoute(
-                  builder: (_) => Material(
-                      child: CustomDrawer(content: HomeTvSeriesPage())));
+              return MaterialPageRoute(builder: (_) => HomeTvSeriesPage());
             case PopularTvSeriesPage.routeName:
               return CupertinoPageRoute(builder: (_) => PopularTvSeriesPage());
             case TopRatedTvSeriesPage.routeName:

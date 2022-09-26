@@ -1,10 +1,9 @@
 // ignore_for_file: library_private_types_in_public_api
 
-import 'package:core/core.dart';
-import 'package:core/presentation/provider/movie/popular_movies_notifier.dart';
+import 'package:core/presentation/bloc/movie/movie_bloc.dart';
 import 'package:core/presentation/widgets/movie_card_list.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PopularMoviesPage extends StatefulWidget {
   static const routeName = '/popular-movie';
@@ -19,9 +18,9 @@ class _PopularMoviesPageState extends State<PopularMoviesPage> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() =>
-        Provider.of<PopularMoviesNotifier>(context, listen: false)
-            .fetchPopularMovies());
+    Future.microtask(
+      () => context.read<PopularMovieBloc>().add(FetchPopularMovies()),
+    );
   }
 
   @override
@@ -32,25 +31,31 @@ class _PopularMoviesPageState extends State<PopularMoviesPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Consumer<PopularMoviesNotifier>(
-          builder: (context, data, child) {
-            if (data.state == RequestState.loading) {
+        child: BlocBuilder<PopularMovieBloc, MovieState>(
+          builder: (context, state) {
+            if (state is MovieLoading) {
               return const Center(
                 child: CircularProgressIndicator(),
               );
-            } else if (data.state == RequestState.loaded) {
+            } else if (state is MovieHasData) {
               return ListView.builder(
                 itemBuilder: (context, index) {
-                  final movie = data.movies[index];
+                  final movie = state.result[index];
                   return MovieCard(movie);
                 },
-                itemCount: data.movies.length,
+                itemCount: state.result.length,
               );
-            } else {
+            } else if (state is MovieError) {
               return Center(
                 key: const Key('error_message'),
-                child: Text(data.message),
+                child: Text(state.message),
               );
+            } else if (state is MovieEmpty) {
+              return const Center(
+                child: Text('No data'),
+              );
+            } else {
+              return Container();
             }
           },
         ),

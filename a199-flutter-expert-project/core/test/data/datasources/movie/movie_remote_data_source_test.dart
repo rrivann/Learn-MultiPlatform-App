@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:core/common/base_url.dart';
 import 'package:core/data/datasources/movie/movie_remote_data_source.dart';
 import 'package:core/data/models/movie/movie_detail_model.dart';
 import 'package:core/data/models/movie/movie_response.dart';
@@ -12,9 +13,6 @@ import '../../../json_reader.dart';
 import '../../../helpers/movie/test_helper.mocks.dart';
 
 void main() {
-  const apiKey = 'apiKey=2174d146bb9c0eab47529b2e77d6b526';
-  const baseUrl = 'https://api.themoviedb.org/3';
-
   late MovieRemoteDataSourceImpl dataSource;
   late MockHttpClient mockHttpClient;
 

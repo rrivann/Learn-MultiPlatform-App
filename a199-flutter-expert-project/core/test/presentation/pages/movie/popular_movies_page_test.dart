@@ -1,66 +1,70 @@
-import 'package:core/core.dart';
-import 'package:core/domain/entities/movie/movie.dart';
+import 'package:core/presentation/bloc/movie/movie_bloc.dart';
 import 'package:core/presentation/pages/movie/popular_movies_page.dart';
-import 'package:core/presentation/provider/movie/popular_movies_notifier.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
-import 'package:provider/provider.dart';
+import 'package:mocktail/mocktail.dart';
 
-import 'popular_movies_page_test.mocks.dart';
+import '../../../dummy_data/movie/dummy_objects.dart';
+import '../../../helpers/movie/test_helper_movie.dart';
 
-@GenerateMocks([PopularMoviesNotifier])
 void main() {
-  late MockPopularMoviesNotifier mockNotifier;
+  late PopularBlocHelper popularBlocHelper;
 
-  setUp(() {
-    mockNotifier = MockPopularMoviesNotifier();
+  setUpAll(() {
+    popularBlocHelper = PopularBlocHelper();
+    registerFallbackValue(DetailMovieEventHelpers());
+    registerFallbackValue(DetailMovieStateHelper());
   });
 
   Widget makeTestableWidget(Widget body) {
-    return ChangeNotifierProvider<PopularMoviesNotifier>.value(
-      value: mockNotifier,
+    return BlocProvider<PopularMovieBloc>(
+      create: (_) => popularBlocHelper,
       child: MaterialApp(
         home: body,
       ),
     );
   }
 
+  tearDown(() {
+    popularBlocHelper.close();
+  });
+
   testWidgets('Page should display center progress bar when loading',
       (WidgetTester tester) async {
-    when(mockNotifier.state).thenReturn(RequestState.loading);
+    when(() => popularBlocHelper.state).thenReturn(MovieLoading());
 
-    final progressBarFinder = find.byType(CircularProgressIndicator);
-    final centerFinder = find.byType(Center);
+    final circularProgress = find.byType(CircularProgressIndicator);
 
     await tester.pumpWidget(makeTestableWidget(const PopularMoviesPage()));
+    await tester.pump();
 
-    expect(centerFinder, findsOneWidget);
-    expect(progressBarFinder, findsOneWidget);
+    expect(circularProgress, findsOneWidget);
   });
 
   testWidgets('Page should display ListView when data is loaded',
       (WidgetTester tester) async {
-    when(mockNotifier.state).thenReturn(RequestState.loaded);
-    when(mockNotifier.movies).thenReturn(<Movie>[]);
+    when(() => popularBlocHelper.state).thenReturn(MovieLoading());
+    when(() => popularBlocHelper.state).thenReturn(MovieHasData(testMovieList));
 
     final listViewFinder = find.byType(ListView);
 
     await tester.pumpWidget(makeTestableWidget(const PopularMoviesPage()));
+    await tester.pump();
 
     expect(listViewFinder, findsOneWidget);
   });
 
   testWidgets('Page should display text with message when Error',
       (WidgetTester tester) async {
-    when(mockNotifier.state).thenReturn(RequestState.error);
-    when(mockNotifier.message).thenReturn('Error message');
+    when(() => popularBlocHelper.state)
+        .thenReturn(const MovieError('Error message'));
 
-    final textFinder = find.byKey(const Key('error_message'));
+    final textMessageKeyFinder = find.byKey(const Key('error_message'));
 
     await tester.pumpWidget(makeTestableWidget(const PopularMoviesPage()));
+    await tester.pump();
 
-    expect(textFinder, findsOneWidget);
+    expect(textMessageKeyFinder, findsOneWidget);
   });
 }

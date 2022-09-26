@@ -1,7 +1,8 @@
 import 'dart:async';
 
 import 'package:core/data/models/movie/movie_table.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:encrypt/encrypt.dart';
+import 'package:sqflite_sqlcipher/sqflite.dart';
 
 class DatabaseHelper {
   static DatabaseHelper? _databaseHelper;
@@ -25,7 +26,12 @@ class DatabaseHelper {
     final path = await getDatabasesPath();
     final databasePath = '$path/ditonton.db';
 
-    var db = await openDatabase(databasePath, version: 1, onCreate: _onCreate);
+    var db = await openDatabase(
+      databasePath,
+      version: 1,
+      onCreate: _onCreate,
+      password: encrypt('password'),
+    );
     return db;
   }
 
@@ -116,4 +122,15 @@ class DatabaseHelper {
 
     return results;
   }
+}
+
+String encrypt(String plainText) {
+  final key = Key.fromUtf8('my 32 length key................');
+  final iv = IV.fromLength(16);
+
+  final encrypter = Encrypter(AES(key));
+
+  final encrypted = encrypter.encrypt(plainText, iv: iv);
+
+  return encrypted.base64;
 }
