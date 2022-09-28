@@ -37,6 +37,7 @@ dependencies:
   encrypt: ^5.0.1
   firebase_core: ^1.22.0
   firebase_crashlytics: ^2.8.10
+  google_fonts: ^3.0.1
 
 dev_dependencies:
   flutter_test:

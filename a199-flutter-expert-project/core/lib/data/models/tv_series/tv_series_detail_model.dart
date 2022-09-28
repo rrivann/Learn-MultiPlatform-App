@@ -31,7 +31,7 @@ class TvSeriesDetail extends Equatable {
   });
 
   final bool adult;
-  final String backdropPath;
+  final String? backdropPath;
   final List<dynamic> episodeRunTime;
   final DateTime firstAirDate;
   final List<GenreModel> genres;

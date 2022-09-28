@@ -38,7 +38,7 @@ import 'package:search/presentation/bloc/movie/search_bloc.dart';
 import 'package:search/presentation/bloc/tv/search_bloc.dart';
 
 final locator = GetIt.instance;
-void init() {
+Future<void> init() async {
   // bloc
   locator.registerFactory(() => SearchBlocMovie(locator()));
   locator.registerFactory(() => NowMovieBloc(locator()));
@@ -117,6 +117,6 @@ void init() {
   locator.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(locator()));
 
   // external
-  locator.registerLazySingleton(() => SslHelper.client);
+  locator.registerLazySingleton(() => SSLHelper.client);
   locator.registerLazySingleton(() => DataConnectionChecker());
 }

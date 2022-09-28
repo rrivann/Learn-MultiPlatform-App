@@ -31,8 +31,8 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  await SslHelper.init();
-  di.init();
+  await SSLHelper.init();
+  await di.init();
   runApp(MyApp());
 }
 
