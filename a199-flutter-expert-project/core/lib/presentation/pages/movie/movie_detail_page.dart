@@ -1,4 +1,4 @@
-// ignore_for_file: library_private_types_in_public_api, must_be_immutable
+// ignore_for_file: library_private_types_in_public_api
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:core/core.dart';
@@ -85,26 +85,25 @@ class _MovieDetailPageState extends State<MovieDetailPage> {
   }
 }
 
-class DetailContent extends StatefulWidget {
+class DetailContent extends StatelessWidget {
   final MovieDetail movie;
   final List<Movie> recommendations;
-  bool isAddedWatchlist;
+  final bool isAddedWatchlist;
 
-  DetailContent(this.movie, this.recommendations, this.isAddedWatchlist,
-      {super.key});
+  const DetailContent(
+    this.movie,
+    this.recommendations,
+    this.isAddedWatchlist, {
+    super.key,
+  });
 
-  @override
-  State<DetailContent> createState() => _DetailContentState();
-}
-
-class _DetailContentState extends State<DetailContent> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     return Stack(
       children: [
         CachedNetworkImage(
-          imageUrl: 'https://image.tmdb.org/t/p/w500${widget.movie.posterPath}',
+          imageUrl: 'https://image.tmdb.org/t/p/w500${movie.posterPath}',
           width: screenWidth,
           placeholder: (context, url) => const Center(
             child: CircularProgressIndicator(),
@@ -135,19 +134,19 @@ class _DetailContentState extends State<DetailContent> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              widget.movie.title,
+                              movie.title,
                               style: kHeading5,
                             ),
                             ElevatedButton(
                               onPressed: () async {
-                                if (!widget.isAddedWatchlist) {
+                                if (!isAddedWatchlist) {
                                   context
                                       .read<WatchlistBloc>()
-                                      .add(SaveWatchlistMovie(widget.movie));
+                                      .add(SaveWatchlistMovie(movie));
                                 } else {
                                   context
                                       .read<WatchlistBloc>()
-                                      .add(RemoveWatchlistMovie(widget.movie));
+                                      .add(RemoveWatchlistMovie(movie));
                                 }
 
                                 String message = "";
@@ -163,7 +162,7 @@ class _DetailContentState extends State<DetailContent> {
                                       : WatchlistBloc
                                           .watchlistRemoveSuccessMessage;
                                 } else {
-                                  message = !widget.isAddedWatchlist
+                                  message = !isAddedWatchlist
                                       ? WatchlistBloc.watchlistAddSuccessMessage
                                       : WatchlistBloc
                                           .watchlistRemoveSuccessMessage;
@@ -190,15 +189,13 @@ class _DetailContentState extends State<DetailContent> {
                                         );
                                       });
                                 }
-                                setState(() {
-                                  widget.isAddedWatchlist =
-                                      !widget.isAddedWatchlist;
-                                });
+                                BlocProvider.of<WatchlistBloc>(context)
+                                    .add(LoadWatchlistStatus(movie.id));
                               },
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  widget.isAddedWatchlist
+                                  isAddedWatchlist
                                       ? const Icon(Icons.check)
                                       : const Icon(Icons.add),
                                   const Text('Watchlist'),
@@ -206,15 +203,15 @@ class _DetailContentState extends State<DetailContent> {
                               ),
                             ),
                             Text(
-                              _showGenres(widget.movie.genres),
+                              _showGenres(movie.genres),
                             ),
                             Text(
-                              _showDuration(widget.movie.runtime),
+                              _showDuration(movie.runtime),
                             ),
                             Row(
                               children: [
                                 RatingBarIndicator(
-                                  rating: widget.movie.voteAverage / 2,
+                                  rating: movie.voteAverage / 2,
                                   itemCount: 5,
                                   itemBuilder: (context, index) => const Icon(
                                     Icons.star,
@@ -222,7 +219,7 @@ class _DetailContentState extends State<DetailContent> {
                                   ),
                                   itemSize: 24,
                                 ),
-                                Text('${widget.movie.voteAverage}')
+                                Text('${movie.voteAverage}')
                               ],
                             ),
                             const SizedBox(height: 16),
@@ -231,7 +228,7 @@ class _DetailContentState extends State<DetailContent> {
                               style: kHeading6,
                             ),
                             Text(
-                              widget.movie.overview,
+                              movie.overview,
                             ),
                             const SizedBox(height: 16),
                             Text(
@@ -252,8 +249,7 @@ class _DetailContentState extends State<DetailContent> {
                                     child: ListView.builder(
                                       scrollDirection: Axis.horizontal,
                                       itemBuilder: (context, index) {
-                                        final movie =
-                                            widget.recommendations[index];
+                                        final movie = recommendations[index];
                                         return Padding(
                                           padding: const EdgeInsets.all(4.0),
                                           child: InkWell(
@@ -285,7 +281,7 @@ class _DetailContentState extends State<DetailContent> {
                                           ),
                                         );
                                       },
-                                      itemCount: widget.recommendations.length,
+                                      itemCount: recommendations.length,
                                     ),
                                   );
                                 } else {
@@ -330,28 +326,28 @@ class _DetailContentState extends State<DetailContent> {
       ],
     );
   }
+}
 
-  String _showGenres(List<Genre> genres) {
-    String result = '';
-    for (var genre in genres) {
-      result += '${genre.name}, ';
-    }
-
-    if (result.isEmpty) {
-      return result;
-    }
-
-    return result.substring(0, result.length - 2);
+String _showGenres(List<Genre> genres) {
+  String result = '';
+  for (var genre in genres) {
+    result += '${genre.name}, ';
   }
 
-  String _showDuration(int runtime) {
-    final int hours = runtime ~/ 60;
-    final int minutes = runtime % 60;
+  if (result.isEmpty) {
+    return result;
+  }
 
-    if (hours > 0) {
-      return '${hours}h ${minutes}m';
-    } else {
-      return '${minutes}m';
-    }
+  return result.substring(0, result.length - 2);
+}
+
+String _showDuration(int runtime) {
+  final int hours = runtime ~/ 60;
+  final int minutes = runtime % 60;
+
+  if (hours > 0) {
+    return '${hours}h ${minutes}m';
+  } else {
+    return '${minutes}m';
   }
 }
